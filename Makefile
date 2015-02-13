@@ -1,4 +1,4 @@
-OUT = marathon-cli 
+OUT = marathon-cli
 
 all: clean deps build
 
