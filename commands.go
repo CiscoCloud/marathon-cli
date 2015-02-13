@@ -8,6 +8,23 @@ import (
 	"net/http"
 )
 
+func RmApp(c *cli.Context) {
+	if len(c.Args()) == 0 {
+		log.Error("Please provide and app to delete")
+	}
+
+	app := c.Args()[0]
+	m := MarathonClient(c.GlobalString("host"))
+
+	_, err := m.DeleteApp(app)
+
+	if err != nil {
+		log.Error("Unable to delete app: ", err)
+	} else {
+		log.Info("Application deleted: ", app)
+	}
+}
+
 func LsApps(c *cli.Context) {
 	m := MarathonClient(c.GlobalString("host"))
 
