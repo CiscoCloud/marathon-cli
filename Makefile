@@ -3,7 +3,7 @@ OUT = marathon-cli
 all: clean deps build
 
 build:
-	go build -o $(OUT) $(OUT).go
+	go build -o $(OUT)
 
 clean:
 	rm -f $(OUT) 
