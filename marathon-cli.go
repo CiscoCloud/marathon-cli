@@ -31,8 +31,13 @@ func run_cli() {
 
 	app.Commands = []cli.Command{
 		{
+			Name:   "rmapp",
+			Usage:  "Deletes an app",
+			Action: RmApp,
+		},
+		{
 			Name:   "lsapp",
-			Usage:  "List all or one running app",
+			Usage:  "List all apps or lists provided apps in the arguments",
 			Action: LsApps,
 		},
 
