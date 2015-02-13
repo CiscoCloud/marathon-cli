@@ -1,9 +1,11 @@
 package main
 
 import (
+        "encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/jbdalido/go-marathon"
 	"net/http"
 	"os"
 )
@@ -12,16 +14,29 @@ const (
 	VERSION	= "0.1.0"
         AUTHOR = "Steven Borrelli"
         EMAIL = "steve@aster.is"
-  
-        API = "v2"
 )
 
+func MarathonClient(host string)(*gomarathon.Client, error) {
+    url := fmt.Sprintf("http://%s", host)
+    m, err := gomarathon.NewClient(url, nil)
+    if err != nil {
+        log.Fatal("Marathon client error: ", err)
+    }
+    return m, err	
+} 
+
 func LsApps(c *cli.Context) {
-	log.Warn("Not implemented")
+    m, err := MarathonClient(c.GlobalString("host")) 
+    r, err := m.ListApps()
+    if err != nil {
+        log.Fatal("Error listing apps: ", err)
+    }
+    v, _ := json.MarshalIndent(r, "", "    ")
+    log.Printf("%s", v)
 }
 
 func Ping(c *cli.Context) {
-        url := fmt.Sprintf("http://%s/%s/ping", c.GlobalString("host"), API)
+        url := fmt.Sprintf("http://%s%s/ping", c.GlobalString("host"), gomarathon.APIVersion)
 
 	_, err := http.Get(url)
 	if err != nil {
