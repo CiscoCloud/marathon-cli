@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
@@ -16,30 +15,26 @@ const (
 	EMAIL   = "steve@aster.is"
 )
 
-func MarathonClient(host string) (*gomarathon.Client, error) {
-	url := fmt.Sprintf("http://%s", host)
-	m, err := gomarathon.NewClient(url, nil)
-	if err != nil {
-		log.Fatal("Marathon client error: ", err)
-	}
-	return m, err
-}
-
 func LsApps(c *cli.Context) {
-	m, err := MarathonClient(c.GlobalString("host"))
-
-	var r *gomarathon.Response
+	m := MarathonClient(c.GlobalString("host"))
 
 	if len(c.Args()) > 0 {
-		r, err = m.GetApp(c.Args()[0])
+		for _, app := range c.Args() {
+			r, err := m.GetApp(app)
+			if err != nil {
+				log.Error("App not found: ", app)
+			} else {
+				PrettyJson(r)
+			}
+		}
 	} else {
-		r, err = m.ListApps()
+		r, err := m.ListApps()
+
+		if err != nil {
+			log.Fatal("Error listing apps ", err)
+		}
+		PrettyJson(r)
 	}
-	if err != nil {
-		log.Fatal("Error listing apps ", err)
-	}
-	v, _ := json.MarshalIndent(r, "", "    ")
-	log.Printf("%s", v)
 }
 
 func Ping(c *cli.Context) {
