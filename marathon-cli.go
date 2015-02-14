@@ -30,6 +30,10 @@ func run_cli() {
 	}
 
 	app.Commands = []cli.Command{
+		{Name: "info",
+			Usage:  "Gets information about Marathon",
+			Action: Info,
+		},
 		{
 			Name:   "rmapp",
 			Usage:  "Deletes an app",
