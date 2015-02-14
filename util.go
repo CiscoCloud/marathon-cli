@@ -3,10 +3,9 @@ package main
 import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
-	"github.com/jbdalido/go-marathon"
 )
 
-func PrettyJson(r *gomarathon.Response) {
+func PrettyJson(r interface{}) {
 	v, _ := json.MarshalIndent(r, "", "    ")
-	log.Printf("%s", v)
+	log.Info("%s", v)
 }
