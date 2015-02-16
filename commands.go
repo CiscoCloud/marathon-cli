@@ -58,21 +58,22 @@ func DeleteLeader(host string) (*gomarathon.Response, error) {
 }
 
 //Removes an app from Marathon
-func RmApp(c *cli.Context) {
+func RmApp(c *cli.Context) (*gomarathon.Response, error) {
 	if len(c.Args()) == 0 {
-		log.Error("Please provide and app to delete")
+		log.Error("Please provide the id of an app to delete")
 	}
 
 	app := c.Args()[0]
-	m, err := MarathonClient(c.GlobalString("host"))
+	m, _ := MarathonClient(c.GlobalString("host"))
 
-	_, err = m.DeleteApp(app)
+	r, err := m.DeleteApp(app)
 
 	if err != nil {
 		log.Error("Unable to delete app: ", err)
 	} else {
 		log.Info("Application deleted: ", app)
 	}
+	return r, err
 }
 
 //Lists all the running apps being managed from a Marathon instance

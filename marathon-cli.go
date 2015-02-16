@@ -60,9 +60,11 @@ func run_cli() {
 			},
 		},
 		{
-			Name:   "rmapp",
-			Usage:  "Deletes an app",
-			Action: RmApp,
+			Name:  "rmapp",
+			Usage: "Deletes an app",
+			Action: func(c *cli.Context) {
+				_, _ = RmApp(c)
+			},
 		},
 		{
 			Name:  "lsapp",
