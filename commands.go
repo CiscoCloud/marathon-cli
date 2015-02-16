@@ -75,13 +75,17 @@ func LsApps(c *cli.Context) {
 	}
 }
 
-func Ping(c *cli.Context) {
-	url := fmt.Sprintf("http://%s%s/ping", c.GlobalString("host"), gomarathon.APIVersion)
+func Ping(host string) (string, error) {
+	m, err := MarathonClient(host)
 
-	_, err := http.Get(url)
+	resp, err := m.Ping(host)
+
 	if err != nil {
-		fmt.Println("Error contacting marathon url: %s", err)
+		log.Fatal("Ping Unsuccessful: ", err)
+		return resp, err
+	} else {
+		log.Info(fmt.Sprintf("Ping successful, recieved '%s' from %s", resp, host))
+		return resp, nil
 	}
 
-	log.Info("Ping successful: ", url)
 }
