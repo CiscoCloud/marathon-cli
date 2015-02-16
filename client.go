@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"github.com/jbdalido/go-marathon"
+	"github.com/asteris-llc/gomarathon"
 )
 
 func MarathonClient(host string) *gomarathon.Client {
