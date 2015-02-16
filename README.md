@@ -105,3 +105,85 @@ Confirm new leader:
    "leader": "host-01:8080"
 }
 ```
+
+###Managing Applications
+Applications are identified by their "id" field.
+
+####List all apps running on the cluster
+
+To shorten the command line, we can set the `MARATHON_HOST` environment variable:
+
+```
+export MARATHON_HOST=host:8080
+```
+
+```
+./marathon-cli lsapp
+{
+   "Code": 200,
+   "apps": [
+      {
+         "id": "/hello-rails",
+         "cmd": "cd hello \u0026\u0026 bundle install \u0026\u0026 bundle exec unicorn -p $PORT",
+         "cpus": 1,
+         "env": {
+            "RAILS_ENV": "production"
+         },
+         "instances": 1,
+         "mem": 100,
+         "ports": [
+            10001
+         ],
+
+     .. <output omitted>
+```
+
+####List a single app running on the cluster
+
+```
+./marathon-cli lsapp hello-rails
+{
+   "Code": 200,
+   "app": {
+      "id": "/hello-rails",
+      "cmd": "cd hello \u0026\u0026 bundle install \u0026\u0026 bundle exec unicorn -p $PORT",
+      "cpus": 1,
+      "env": {
+         "RAILS_ENV": "production"
+      },
+      "instances": 1,
+      "mem": 100,
+      "ports": [
+
+      ... <output omitted>
+
+}
+
+```
+
+####Delete an application
+This will terminate and delete an application
+
+```
+./marathon-cli rmapp hello-rails
+INFO[0000] Application deleted: hello-rails
+```
+
+
+####Launch an application form a json description file.
+Use a standard Marathon application configuration file to launch an application. The `examples/` directory contains sample files.
+
+
+```
+./marathon-cli app --file examples/rails.json
+INFO[0000] Application deployed app: hello-rails
+{
+   "Code": 201,
+   "version": "2015-02-16T14:27:55.572Z"
+}
+```
+
+Refer to the [Marathon Documentation](https://mesosphere.github.io/marathon/docs/rest-api.html#post-/v2/apps) for more configuration examples.
+
+
+ 
