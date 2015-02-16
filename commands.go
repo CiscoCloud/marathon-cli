@@ -1,36 +1,60 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"github.com/asteris-llc/gomarathon"
 	"github.com/codegangsta/cli"
-	"github.com/jbdalido/go-marathon"
-	"io/ioutil"
-	"net/http"
 )
 
-//Gets information about a Marathon installation
-func Info(c *cli.Context) {
-	url := fmt.Sprintf("http://%s%s/info", c.GlobalString("host"), gomarathon.APIVersion)
+//Gets information about the Marathon cluster
+func Info(host string) (*gomarathon.Response, error) {
+	m, _ := MarathonClient(host)
 
-	r, err := http.Get(url)
-	if err != nil {
-		fmt.Println("Error contacting marathon url: %s", err)
-	}
-
-	data := map[string]interface{}{}
-
-	defer r.Body.Close()
-	body, err := ioutil.ReadAll(r.Body)
+	resp, err := m.Info()
 
 	if err != nil {
-		log.Error("Unable to read Info response: ", err)
+		log.Error("Unable to get cluster information: ", err)
+    return resp, err
+	}
+	return resp, err
+}
+
+//Gets the current Leader
+func Leader(host string) (*gomarathon.Response, error) {
+
+	m, _ := MarathonClient(host)
+
+	resp, err := m.Leader()
+
+	if err != nil {
+		log.Fatal("Leader data error: Make sure your hosts can resolve peer hostnames: ", err)
+		return nil, err
 	}
 
-	json.Unmarshal(body, &data)
-	j, _ := json.MarshalIndent(data, "", "   ")
-	fmt.Println(string(j))
+	if resp.Code == 404 {
+		log.Info("No leader elected")
+	}
+
+	return resp, nil
+}
+
+//Forces current leader to step down
+func DeleteLeader(host string) (*gomarathon.Response, error) {
+	m, _ := MarathonClient(host)
+
+	resp, err := m.DeleteLeader()
+
+	if err != nil {
+		log.Error("Error on Delete Leader request: ", err)
+		return nil, err
+	}
+
+	if resp.Code == 404 {
+		log.Error("Request for leader to step down failed")
+	}
+
+	return resp, err
 }
 
 //Removes an app from Marathon
