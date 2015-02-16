@@ -79,9 +79,9 @@ func run_cli() {
 					log.Fatal("Please provide a --file")
 				}
 				r, err := MkApp(c)
-        if err == nil {
-				  Output(c.GlobalString("format"), r)
-        }
+				if err == nil {
+					Output(c.GlobalString("format"), r)
+				}
 			},
 		},
 		{
@@ -97,6 +97,16 @@ func run_cli() {
 			Usage: "Deletes app <appId>",
 			Action: func(c *cli.Context) {
 				_, _ = RmApp(c)
+			},
+		},
+		{
+			Name:  "lstask",
+			Usage: "List all running tasks in the cluster",
+			Action: func(c *cli.Context) {
+				r, err := LsTask(c)
+				if err == nil {
+					Output(c.GlobalString("format"), r)
+				}
 			},
 		},
 	}
