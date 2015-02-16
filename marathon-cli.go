@@ -36,8 +36,14 @@ func run_cli() {
 
 	app.Commands = []cli.Command{
 		{
+			Name:  "ping",
+			Usage: "Test Marathon connection",
+			Action: func(c *cli.Context) {
+				_, _ = Ping(c.GlobalString("host"))
+			},
+		}, {
 			Name:  "info",
-			Usage: "Gets information about the marathon cluster",
+			Usage: "Gets information about the Marathon cluster",
 			Action: func(c *cli.Context) {
 				r, _ := Info(c.GlobalString("host"))
 				Output(c.GlobalString("format"), r)
@@ -72,13 +78,6 @@ func run_cli() {
 			Usage: "Deletes app <appId>",
 			Action: func(c *cli.Context) {
 				_, _ = RmApp(c)
-			},
-		},
-		{
-			Name:  "ping",
-			Usage: "Test Marathon connection",
-			Action: func(c *cli.Context) {
-				_, _ = Ping(c.GlobalString("host"))
 			},
 		},
 	}
