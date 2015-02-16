@@ -40,9 +40,9 @@ func RmApp(c *cli.Context) {
 	}
 
 	app := c.Args()[0]
-	m := MarathonClient(c.GlobalString("host"))
+	m, err := MarathonClient(c.GlobalString("host"))
 
-	_, err := m.DeleteApp(app)
+	_, err = m.DeleteApp(app)
 
 	if err != nil {
 		log.Error("Unable to delete app: ", err)
@@ -54,7 +54,11 @@ func RmApp(c *cli.Context) {
 //Lists all the running apps being managed from a Marathon instance
 //if arguments are supplied, only list those apps
 func LsApps(c *cli.Context) {
-	m := MarathonClient(c.GlobalString("host"))
+	m, err := MarathonClient(c.GlobalString("host"))
+
+	if err != nil {
+		log.Error("Error:", err)
+	}
 
 	if len(c.Args()) > 0 {
 		for _, app := range c.Args() {
