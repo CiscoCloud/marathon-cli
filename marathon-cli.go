@@ -27,6 +27,11 @@ func run_cli() {
 			Usage:  "Marathon host (default localhost:8080)",
 			EnvVar: "MARATHON_HOST",
 		},
+		cli.StringFlag{
+			Name:  "format",
+			Value: "json",
+			Usage: "Output format (json)",
+		},
 	}
 
 	app.Commands = []cli.Command{
