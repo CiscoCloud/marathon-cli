@@ -6,11 +6,11 @@ import (
 	"github.com/asteris-llc/gomarathon"
 )
 
-func MarathonClient(host string) *gomarathon.Client {
+func MarathonClient(host string) (*gomarathon.Client, error) {
 	url := fmt.Sprintf("http://%s", host)
 	m, err := gomarathon.NewClient(url, nil)
 	if err != nil {
 		log.Fatal("Marathon client error: ", err)
 	}
-	return m
+	return m, err
 }
