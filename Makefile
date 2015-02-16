@@ -11,4 +11,4 @@ clean:
 deps:
 	go get github.com/Sirupsen/logrus
 	go get github.com/codegangsta/cli 
-	go get github.com/jbdalido/go-marathon
+	go get github.com/asteris-llc/gomarathon
