@@ -58,23 +58,22 @@ func run_cli() {
 				r, _ := DeleteLeader(c.GlobalString("host"))
 				Output(c.GlobalString("format"), r)
 			},
-		},
-		{
-			Name:  "rmapp",
-			Usage: "Deletes an app",
-			Action: func(c *cli.Context) {
-				_, _ = RmApp(c)
-			},
-		},
-		{
+		},	
+   	{
 			Name:  "lsapp",
-			Usage: "List all apps or lists provided apps in the arguments",
+			Usage: "List all apps, or list a single <appId> ",
 			Action: func(c *cli.Context) {
 				r, _ := LsApps(c)
 				Output(c.GlobalString("format"), r)
 			},
 		},
-
+		{
+			Name:  "rmapp",
+			Usage: "Deletes app <appId>",
+			Action: func(c *cli.Context) {
+				_, _ = RmApp(c)
+			},
+		},
 		{
 			Name:  "ping",
 			Usage: "Test Marathon connection",
