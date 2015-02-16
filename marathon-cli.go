@@ -35,9 +35,29 @@ func run_cli() {
 	}
 
 	app.Commands = []cli.Command{
-		{Name: "info",
-			Usage:  "Gets information about Marathon",
-			Action: Info,
+		{
+			Name:  "info",
+			Usage: "Gets information about the marathon cluster",
+			Action: func(c *cli.Context) {
+				r, _ := Info(c.GlobalString("host"))
+				Output(c.GlobalString("format"), r)
+			},
+		},
+		{
+			Name:  "leader",
+			Usage: "Gets the current leader",
+			Action: func(c *cli.Context) {
+				r, _ := Leader(c.GlobalString("host"))
+				Output(c.GlobalString("format"), r)
+			},
+		},
+		{
+			Name:  "rmleader",
+			Usage: "Forces current leader to abdicate",
+			Action: func(c *cli.Context) {
+				r, _ := DeleteLeader(c.GlobalString("host"))
+				Output(c.GlobalString("format"), r)
+			},
 		},
 		{
 			Name:   "rmapp",
