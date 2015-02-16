@@ -35,7 +35,7 @@ INFO[0000] Ping successful, recieved 'pong' from host-02:8080
 ```
 ./marathon --host host-01:8080 info
 
-
+{
    "Code": 200,
    "leader": "host-01:8080",
    "frameworkId": "20150212-005751-3034589101-5050-27381-0000",
