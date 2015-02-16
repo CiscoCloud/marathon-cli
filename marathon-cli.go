@@ -65,9 +65,12 @@ func run_cli() {
 			Action: RmApp,
 		},
 		{
-			Name:   "lsapp",
-			Usage:  "List all apps or lists provided apps in the arguments",
-			Action: LsApps,
+			Name:  "lsapp",
+			Usage: "List all apps or lists provided apps in the arguments",
+			Action: func(c *cli.Context) {
+				r, _ := LsApps(c)
+				Output(c.GlobalString("format"), r)
+			},
 		},
 
 		{
