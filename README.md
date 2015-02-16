@@ -96,7 +96,7 @@ INFO[0000] Ping successful, recieved 'pong' from host-02:8080
 }
 ```
 
-Confirm new leader:
+After a leader steps down, Marathon will perform an election to determine the next leader. You can confirm that the leadership changed:
 
 ```
 ./marathon-cli --host host-01:8080 leader
