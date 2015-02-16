@@ -11,7 +11,15 @@ import (
 func LsTask(c *cli.Context) (*gomarathon.Response, error) {
 	m, _ := MarathonClient(c.GlobalString("host"))
 
-	resp, err := m.ListTasks()
+	var resp *gomarathon.Response
+	var err error
+
+	//if an arg is supplied, just look for tasks for that app
+	if len(c.Args()) > 0 {
+		resp, err = m.GetAppTasks(c.Args().First())
+	} else {
+		resp, err = m.ListTasks()
+	}
 
 	if err != nil {
 		log.Error("Error fetching tasks: ", err)
