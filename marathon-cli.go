@@ -51,9 +51,11 @@ func run_cli() {
 		},
 
 		{
-			Name:   "ping",
-			Usage:  "Test Marathon connection",
-			Action: Ping,
+			Name:  "ping",
+			Usage: "Test Marathon connection",
+			Action: func(c *cli.Context) {
+				_, _ = Ping(c.GlobalString("host"))
+			},
 		},
 	}
 
