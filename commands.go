@@ -1,11 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/asteris-llc/gomarathon"
 	"github.com/codegangsta/cli"
-	"encoding/json"
 	"io/ioutil"
 )
 
@@ -65,30 +65,30 @@ func MkApp(c *cli.Context) (*gomarathon.Response, error) {
 	file := c.String("file")
 	dat, err := ioutil.ReadFile(file)
 
-  if err != nil {
-    log.Error(fmt.Sprintf("Unable to read file %s: %s", file, err)) 
-    return nil, err
-  }
+	if err != nil {
+		log.Error(fmt.Sprintf("Unable to read file %s: %s", file, err))
+		return nil, err
+	}
 
 	var app *gomarathon.Application
 
 	err = json.Unmarshal(dat, &app)
 
-  if err != nil {
-    log.Error("Unable to parse json config: ", err)
-  }
+	if err != nil {
+		log.Error("Unable to parse json config: ", err)
+	}
 
 	m, _ := MarathonClient(c.GlobalString("host"))
 
 	resp, err := m.CreateApp(app)
 
-  if err != nil {
-    log.Error("Unable to launch app: ", err) 
-  }
+	if err != nil {
+		log.Error("Unable to launch app: ", err)
+	}
 
-  if resp.Code == 201 { 
-    log.Info("Application deployed app: ", app.ID) 
-  }
+	if resp.Code == 201 {
+		log.Info("Application deployed app: ", app.ID)
+	}
 
 	return resp, err
 }
