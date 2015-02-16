@@ -15,7 +15,7 @@ func Info(host string) (*gomarathon.Response, error) {
 
 	if err != nil {
 		log.Error("Unable to get cluster information: ", err)
-    return resp, err
+		return resp, err
 	}
 	return resp, err
 }
@@ -76,31 +76,27 @@ func RmApp(c *cli.Context) {
 }
 
 //Lists all the running apps being managed from a Marathon instance
-//if arguments are supplied, only list those apps
-func LsApps(c *cli.Context) {
-	m, err := MarathonClient(c.GlobalString("host"))
+//if argument is supplied, only list that apps
+func LsApps(c *cli.Context) (*gomarathon.Response, error) {
+	m, _ := MarathonClient(c.GlobalString("host"))
 
-	if err != nil {
-		log.Error("Error:", err)
-	}
+	filter := ""
+
+	var r *gomarathon.Response
+	var err error
 
 	if len(c.Args()) > 0 {
-		for _, app := range c.Args() {
-			r, err := m.GetApp(app)
-			if err != nil {
-				log.Error("App not found: ", app)
-			} else {
-				PrettyJson(r)
-			}
-		}
+		filter = c.Args()[0]
+		r, err = m.GetApp(filter)
 	} else {
-		r, err := m.ListApps()
-
-		if err != nil {
-			log.Fatal("Error listing apps ", err)
-		}
-		PrettyJson(r)
+		r, err = m.ListAppsByCmd(filter)
 	}
+
+	if err != nil {
+		log.Error("Error listing apps: ", err)
+	}
+
+	return r, err
 }
 
 func Ping(host string) (string, error) {
