@@ -1,7 +1,7 @@
 package main
 
 import (
-	//log "github.com/Sirupsen/logrus"
+	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"os"
 )
@@ -64,8 +64,27 @@ func run_cli() {
 				r, _ := DeleteLeader(c.GlobalString("host"))
 				Output(c.GlobalString("format"), r)
 			},
-		},	
-   	{
+		},
+		{
+			Name:  "app",
+			Usage: "Launches a new app",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "file, f",
+					Usage: "json App config file",
+				},
+			},
+			Action: func(c *cli.Context) {
+				if c.String("file") == "" {
+					log.Fatal("Please provide a --file")
+				}
+				r, err := MkApp(c)
+        if err == nil {
+				  Output(c.GlobalString("format"), r)
+        }
+			},
+		},
+		{
 			Name:  "lsapp",
 			Usage: "List all apps, or list a single <appId> ",
 			Action: func(c *cli.Context) {
