@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/asteris-llc/gomarathon"
@@ -96,7 +97,8 @@ func MkApp(c *cli.Context) (*gomarathon.Response, error) {
 //Removes an app from Marathon
 func RmApp(c *cli.Context) (*gomarathon.Response, error) {
 	if len(c.Args()) == 0 {
-		log.Error("Please provide the id of an app to delete")
+		log.Error("No application provided to delete")
+		return nil, errors.New("Please provide the id of an app to delete")
 	}
 
 	app := c.Args()[0]
