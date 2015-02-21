@@ -109,6 +109,16 @@ func run_cli() {
 				}
 			},
 		},
+		{
+			Name:  "killAppTasks",
+			Usage: "Kill all the tasks for app <app Id>.\nTo kill <appID> tasks on one host use, --onhost <hostname>.",
+			Action: func(c *cli.Context) {
+				r, err := KillAppTasks(c)
+				if err == nil {
+					Output(c.GlobalString("format"), r)
+				}
+			},
+		},
 	}
 
 	app.Run(os.Args)
