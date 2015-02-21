@@ -20,8 +20,3 @@ func OutputJson(r *gomarathon.Response) {
 	v, _ := json.MarshalIndent(r, "", "   ")
 	fmt.Printf("%s\n", v)
 }
-
-func PrettyJson(r interface{}) {
-	v, _ := json.MarshalIndent(r, "", "    ")
-	log.Info(string(v))
-}
