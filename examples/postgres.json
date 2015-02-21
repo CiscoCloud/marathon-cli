@@ -1,0 +1,20 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "postgres:9.4",
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 5432, "hostPort": 0,  "protocol": "tcp" }
+      ]
+    }
+  },
+  "env": {
+    "POSTGRES_PASSWORD": "shipped",
+    "SERVICE_TAGS": "shipped"
+  }, 
+  "id": "postgres",
+  "instances": 1,
+  "cpus": 1.0,
+  "mem": 512
+}
